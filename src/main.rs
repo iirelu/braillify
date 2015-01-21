@@ -36,7 +36,9 @@ fn main() {
 }
 
 fn parse_args(args: Vec<String>) -> Result<Args, &'static str> {
-    assert!(args.len() > 1, "Too few arguments!");
+    if args.len() < 2 {
+        return Err("Too few arguments!");
+    }
 
     let img = match image::open(&Path::new(&args[1])) {
         Ok(image) => image.to_luma(),
