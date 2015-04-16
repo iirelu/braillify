@@ -28,8 +28,6 @@ pub fn make_braille(dotmap: u8) -> char {
 
 #[cfg(test)]
 mod tests {
-    extern crate test;
-    use self::test::Bencher;
     use super::make_braille;
 
     #[test]
