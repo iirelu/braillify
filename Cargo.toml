@@ -5,4 +5,4 @@ version = "0.0.1"
 authors = ["iirelu <totallymyrealemail@hush.ai>"]
 
 [dependencies.image]
-git = "https://github.com/pavlov-dmitry/image"
+git = "https://github.com/PistonDevelopers/image"
