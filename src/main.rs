@@ -1,15 +1,14 @@
-#![allow(unstable)]
-
 extern crate image;
 
+use std::path::Path;
 use display::Display;
 
 mod display;
 mod braille;
 
 enum Args {
-    NoSize(image::GreyImage),
-    WithSize(image::GreyImage, (u32, u32)),
+    NoSize(image::GrayImage),
+    WithSize(image::GrayImage, (u32, u32)),
 }
 
 fn main() {
@@ -17,7 +16,9 @@ fn main() {
                  \timage: Any image (example: image.png)\n\
                  \tsize: The desired output size. (example: 50x25)\n\
                  \t\tIf a size isn't given, it'll be guessed automatically.";
-    match parse_args(std::os::args()) {
+    let args = std::env::args().collect();
+
+    match parse_args(args) {
         Ok(args) => {
             let display = match args {
                 Args::NoSize(img) => {
@@ -32,7 +33,6 @@ fn main() {
         },
         Err(err) => println!("{}\n\nUsage: {}", err, usage)
     };
-
 }
 
 fn parse_args(args: Vec<String>) -> Result<Args, &'static str> {
@@ -47,7 +47,7 @@ fn parse_args(args: Vec<String>) -> Result<Args, &'static str> {
 
     match args.len() {
         2 => Ok(Args::NoSize(img)),
-        3 => Ok(Args::WithSize(img, match parse_size(args[2].as_slice()) {
+        3 => Ok(Args::WithSize(img, match parse_size(args[2].as_ref()) {
             Some(x) => x,
             None => return Err("Couldn't parse size!")
         })),
@@ -60,7 +60,7 @@ fn parse_args(args: Vec<String>) -> Result<Args, &'static str> {
 /// Returns None if it can't be parsed
 fn parse_size(size: &str) -> Option<(u32, u32)> {
     let splitted = size.splitn(1, 'x') // Only want at most two slices
-        .filter_map(|s| s.parse::<u32>())
+        .filter_map(|s| s.parse::<u32>().ok())
         .collect::<Vec<_>>();
 
     match splitted.len() {

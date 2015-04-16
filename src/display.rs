@@ -1,22 +1,17 @@
 extern crate image;
 
-extern crate test;
-
-#[cfg(test)]
-use test::Bencher;
-
 use self::image::imageops::resize;
 
 use braille::make_braille;
 
 pub struct Display {
-    image: image::GreyImage,
+    image: image::GrayImage,
     pub char_width: u32,
     pub char_height: u32,
 }
 
 impl Display {
-    pub fn new(img: image::GreyImage, width: u32, height: u32) -> Display {
+    pub fn new(img: image::GrayImage, width: u32, height: u32) -> Display {
         Display {
             image: resize(&img, width*2, height*4, image::Lanczos3),
             char_width: width,
@@ -50,10 +45,4 @@ impl Display {
     fn sample(&self, x: u32, y: u32) -> bool {
         self.image[(x, y)][0] < 128
     }
-}
-
-#[bench]
-fn bench_display(b: &mut Bencher) {
-    let display = Display::new(&Path::new("image.png"), 80, 29);
-    b.iter(|| display.render())
 }
