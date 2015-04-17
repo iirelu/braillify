@@ -1,3 +1,6 @@
 language: rust
 os:
     - linux
+rust:
+    - 1.0.0-beta
+    - nightly
