@@ -59,7 +59,7 @@ fn parse_args(args: Vec<String>) -> Result<Args, &'static str> {
 ///
 /// Returns None if it can't be parsed
 fn parse_size(size: &str) -> Option<(u32, u32)> {
-    let splitted = size.splitn(1, 'x') // Only want at most two slices
+    let splitted = size.splitn(2, 'x') // Only want at most two slices
         .filter_map(|s| s.parse::<u32>().ok())
         .collect::<Vec<_>>();
 
