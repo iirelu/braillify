@@ -1,4 +1,4 @@
-# Braillify
+# Braillify [![Build Status](https://travis-ci.org/iirelu/braillify.svg?branch=master)](https://travis-ci.org/iirelu/braillify)
 
 A tool for converting images into braille!
 
