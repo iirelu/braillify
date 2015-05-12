@@ -43,7 +43,7 @@ Isn't Rust nice?
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ```
 
-Note: If whatever fonts your browser use don't support Braille patterns, you're not going to see much there. If that's the case, [here's a screenshot](http://i.cubeupload.com/WajkRQ.png).
+Note: If whatever fonts your browser use don't support Braille patterns, you're not going to see much there. If that's the case, [here's a screenshot](https://i.imgur.com/Sd94Ghi.png).
 
 ## Why?
 
