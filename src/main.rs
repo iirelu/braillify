@@ -1,70 +1,49 @@
 extern crate image;
 
-use std::path::Path;
+use std::env;
+use std::process;
+
+use image::open;
 use display::Display;
+use parse_args::ArgParser;
+use parse_args::Error as ParseError;
 
 mod display;
 mod braille;
-
-enum Args {
-    NoSize(image::GrayImage),
-    WithSize(image::GrayImage, (u32, u32)),
-}
+mod parse_args;
 
 fn main() {
+    match ArgParser::new(env::args().skip(1).collect()) {
+        Err(ParseError::TooFewArgs) =>
+            complain("Too few arguments!"),
+        Err(ParseError::CantParseSize) =>
+            complain("Couldn't parse size!"),
+        Err(ParseError::BadArgs) =>
+            complain("Bad arguments!"),
+
+        Ok(args) => {
+            let img = match image::open(args.path()) {
+                Ok(image) => image.to_luma(),
+                Err(_) => complain("Couldn't open image!")
+            };
+            let (width, height) = args.size().unwrap_or({
+                let (width, height) = img.dimensions();
+                (width/10, height/10)
+            });
+
+            let display = Display::new(img, width, height);
+
+            println!("{}", display.render());
+        }
+    }
+}
+
+fn complain(error: &str) -> ! {
     let usage = "braillify image [size]\n\
                  \timage: Any image (example: image.png)\n\
                  \tsize: The desired output size. (example: 50x25)\n\
                  \t\tIf a size isn't given, it'll be guessed automatically.";
-    let args = std::env::args().collect();
 
-    match parse_args(args) {
-        Ok(args) => {
-            let display = match args {
-                Args::NoSize(img) => {
-                    let (width, height) = img.dimensions();
-                    Display::new(img, width/10, height/20)
-                },
-                Args::WithSize(img, (width, height)) => {
-                    Display::new(img, width, height)
-                },
-            };
-            println!("{}", display.render());
-        },
-        Err(err) => println!("{}\n\nUsage: {}", err, usage)
-    };
-}
-
-fn parse_args(args: Vec<String>) -> Result<Args, &'static str> {
-    if args.len() < 2 {
-        return Err("Too few arguments!");
-    }
-
-    let img = match image::open(&Path::new(&args[1])) {
-        Ok(image) => image.to_luma(),
-        Err(_) => return Err("Couldn't open image!")
-    };
-
-    match args.len() {
-        2 => Ok(Args::NoSize(img)),
-        3 => Ok(Args::WithSize(img, match parse_size(args[2].as_ref()) {
-            Some(x) => x,
-            None => return Err("Couldn't parse size!")
-        })),
-        _ => Err("Bad arguments!")
-    }
-}
-
-/// Parses something that looks like a size (50x50, etc)
-///
-/// Returns None if it can't be parsed
-fn parse_size(size: &str) -> Option<(u32, u32)> {
-    let splitted = size.splitn(2, 'x') // Only want at most two slices
-        .filter_map(|s| s.parse::<u32>().ok())
-        .collect::<Vec<_>>();
-
-    match splitted.len() {
-        2 => Some((splitted[0], splitted[1])),
-        _ => None
-    }
+    println!("{}\n\n{}", error, usage);
+    process::exit(1);
 }
