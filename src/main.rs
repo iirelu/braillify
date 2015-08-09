@@ -13,29 +13,29 @@ mod braille;
 mod parse_args;
 
 fn main() {
-    match ArgParser::new(env::args().skip(1).collect()) {
+    let args = match ArgParser::new(env::args().skip(1).collect()) {
         Err(ParseError::TooFewArgs) =>
             complain("Too few arguments!"),
         Err(ParseError::CantParseSize) =>
             complain("Couldn't parse size!"),
         Err(ParseError::BadArgs) =>
             complain("Bad arguments!"),
+        Ok(args) => args
+    };
 
-        Ok(args) => {
-            let img = match image::open(args.path()) {
-                Ok(image) => image.to_luma(),
-                Err(_) => complain("Couldn't open image!")
-            };
-            let (width, height) = args.size().unwrap_or({
-                let (width, height) = img.dimensions();
-                (width/10, height/10)
-            });
+    let img = match image::open(args.path()) {
+        Ok(image) => image.to_luma(),
+        Err(_) => complain("Couldn't open image!")
+    };
 
-            let display = Display::new(img, width, height);
+    let (width, height) = args.size().unwrap_or({
+        let (width, height) = img.dimensions();
+        (width/10, height/10)
+    });
 
-            println!("{}", display.render());
-        }
-    }
+    let display = Display::new(img, width, height);
+
+    println!("{}", display.render());
 }
 
 fn complain(error: &str) -> ! {
