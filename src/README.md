@@ -8,8 +8,9 @@ main.rs:
  │       └─ fn render(&self) -> String
  │
  ├─ mod braille // braille.rs
- │   └─ make_braille(dotmap) -> char // Used exclusively by display.rs for turning pixels
- │                                   // into unicode braille characters
+ │   └─ trait ToBraille // Only implemented for u8
+ │       └─ fn to_braille(&self) -> char // Handles the conversion of dot maps (in the
+ │                                       // form of bytes) into braille characters
  │
  ├─ mod parse_args // parse_args.rs
  │   └─ struct ArgParser // Used by main() for parsing arguments

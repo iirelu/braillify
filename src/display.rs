@@ -2,7 +2,7 @@ extern crate image;
 
 use self::image::imageops::resize;
 
-use braille::make_braille;
+use braille::ToBraille;
 
 pub struct Display {
     image: image::GrayImage,
@@ -45,7 +45,7 @@ impl Display {
                 0
             };
         }
-        make_braille(dot_map)
+        dot_map.to_braille()
     }
 
     fn sample(&self, x: u32, y: u32) -> bool {
