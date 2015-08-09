@@ -52,3 +52,37 @@ impl Display {
         self.image[(x, y)][0] < 128
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Display;
+    use super::image;
+
+    #[test]
+    fn test_overall_functionality() {
+        let image = image::open("tests/rust-logo.png").unwrap().to_luma();
+        let display = Display::new(image, 20, 10);
+
+        let expected = "\
+⠀⠀⠀⠀⠀⠀⣤⣰⣦⣴⣦⣴⣄⣤⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣤⣼⣿⡿⠟⠛⢧⡼⠛⠻⢿⣿⣧⡤⠀⠀⠀
+⠀⠀⣶⣿⣿⣥⣤⣤⣤⣤⣤⣤⣄⣀⠉⢿⣷⡶⠀⠀
+⠀⣻⡿⢿⡿⣿⣿⣿⡿⠿⠿⢿⣿⣿⡧⢠⠟⢿⣏⠀
+⢈⣿⣷⠚⠁⣿⣿⣿⣷⣶⣶⣾⣿⡿⠃⠈⠓⣿⣟⡁
+⢈⣿⣿⠀⠀⣿⣿⣿⡏⠉⠙⢿⣿⣿⡆⠀⣶⣿⣯⡁
+⠀⣽⣿⣿⣿⣿⣿⣿⣿⣿⠀⠸⣿⣿⣿⣿⣿⣿⣏⠀
+⠀⠀⠿⣿⣧⠴⣆⠀⠀⠀⠀⠀⠀⡴⢤⣾⡿⠷⠀⠀
+⠀⠀⠀⠛⢻⣶⣿⣶⣤⣤⣤⣤⣶⣷⣾⡟⠓⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠛⠙⠟⠻⠟⠻⠋⠛⠀⠀⠀⠀⠀⠀
+";
+
+        assert!(display.sample(0, 0) == false);
+        assert!(display.sample(4, 19) == true);
+
+        assert!(display.braillify_block(0, 5) == '⠀');
+        assert!(display.braillify_block(0, 6) == '⣤');
+        assert!(display.braillify_block(0, 7) == '⣰');
+
+        assert!(display.render() == expected);
+    }
+}
