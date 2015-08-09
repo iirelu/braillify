@@ -15,7 +15,7 @@ main.rs:
  │   └─ struct ArgParser // Used by main() for parsing arguments
  │        ├─ fn new(args) -> Self
  │        ├─ fn path(&self) -> &String
- │        └─ fn size(&self) -> Option<(u32, u32)>
+ │        └─ fn size(&self) -> &Option<(u32, u32)>
  │
  ├─ fn main() // Entry point. Deals with making a Display from the parsed arguments, and
  │            // sending the Display's render to stdout
