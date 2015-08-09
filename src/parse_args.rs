@@ -27,25 +27,14 @@ impl ArgParser {
             return Err(Error::BadArgs)
         }
 
-        let path = args[0].to_string();
+        // Would love to use .and_then() here, but sadly try! doesn't like closures.
         let size = match args.get(1) {
-            Some(string) => {
-                let string = string.to_string(); // i am a bad person
-                let components = string.splitn(2, 'x')
-                    .filter_map(|x| x.parse().ok())
-                    .collect::<Vec<u32>>();
-
-                if components.len() == 2 {
-                    Some((components[0], components[1]))
-                } else {
-                    return Err(Error::CantParseSize)
-                }
-            }
+            Some(string) => Some(try!(parse_size(string))),
             None => None
         };
 
         Ok(ArgParser {
-            path: path,
+            path: args[0].to_string(),
             size: size
         })
     }
@@ -58,6 +47,20 @@ impl ArgParser {
     /// Returns the size (optional)
     pub fn size(&self) -> &Option<(u32, u32)> {
         &self.size
+    }
+}
+
+fn parse_size<T: ToString>(s: &T) -> Result<(u32, u32), Error> {
+    let string = s.to_string();
+
+    let components = string.splitn(2, 'x')
+        .filter_map(|x| x.parse().ok())
+        .collect::<Vec<u32>>();
+
+    if components.len() == 2 {
+        Ok((components[0], components[1]))
+    } else {
+        Err(Error::CantParseSize)
     }
 }
 
