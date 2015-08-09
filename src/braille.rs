@@ -4,24 +4,38 @@ use std::char;
 ///
 /// # Arguments
 ///
-/// `dotmap` - A (usually) binary literal that's used to generate the unicode
-/// symbol that gets returned.
+/// `dotmap` - A u8 that gets its bits used as a mask for which dots on the
+/// braille symbol should be "lit".
 ///
 /// # Examples
-/// make_braille(0b10011101); // Returns ⢵
+///
+/// ```
+/// assert!(make_braille(0b10011101) == '⢵');
+/// ```
 pub fn make_braille(dotmap: u8) -> char {
-    // Braille in unicode works weirdly so we have to warp the values
+    // Braille in unicode works weirdly so we have to warp the bits
     // around.
+    //
+    // If you number each bit of a byte like 0b12345678 then a braille
+    // character looks like:
+    //
+    //      8  5
+    //      7  4
+    //      6  3
+    //      2  1
+    //
+    // This is the core reason for all the weird bitwise reordering.
+    //
     // See https://en.wikipedia.org/wiki/Braille_Patterns for more info
     let warped_dotmap: u8 =
-        (dotmap >> 7 & 0b00000001) | // Moving 10000000 to 00000001
-        (dotmap >> 3 & 0b00001000) | // Moving 01000000 to 00001000
-        (dotmap >> 4 & 0b00000010) | // Moving 00100000 to 00000010
-        (dotmap >> 0 & 0b00010000) | // Moving 00010000 to 00010000
-        (dotmap >> 1 & 0b00000100) | // Moving 00001000 to 00000100
-        (dotmap << 3 & 0b00100000) | // Moving 00000100 to 00100000
-        (dotmap << 5 & 0b01000000) | // Moving 00000010 to 01000000
-        (dotmap << 7 & 0b10000000);  // Moving 00000001 to 10000000
+        (dotmap >> 7 & 0b00000001) | // Moving X_______ to _______X
+        (dotmap >> 3 & 0b00001000) | // Moving _X______ to ____X___
+        (dotmap >> 4 & 0b00000010) | // Moving __X_____ to ______X_
+        (dotmap >> 0 & 0b00010000) | // Moving ___X____ to ___X____
+        (dotmap >> 1 & 0b00000100) | // Moving ____X___ to _____X__
+        (dotmap << 3 & 0b00100000) | // Moving _____X__ to __X_____
+        (dotmap << 5 & 0b01000000) | // Moving ______X_ to _X______
+        (dotmap << 7 & 0b10000000);  // Moving _______X to X_______
     char::from_u32(10240 + warped_dotmap as u32).unwrap()
 }
 
