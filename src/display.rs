@@ -6,8 +6,8 @@ use braille::make_braille;
 
 pub struct Display {
     image: image::GrayImage,
-    pub char_width: u32,
-    pub char_height: u32,
+    char_width: u32,
+    char_height: u32,
 }
 
 impl Display {
