@@ -12,6 +12,13 @@ mod display;
 mod braille;
 mod parse_args;
 
+
+const USAGE_TEXT: &'static str = "\
+braillify image [size]
+    image: Any image (ex: image.png)
+    size: The desired output size in characters. (ex: 50x25)
+        If a size isn't given, it'll be guessed from the image's dimensions.";
+
 fn main() {
     let args = match ArgParser::new(env::args().skip(1).collect()) {
         Err(ParseError::TooFewArgs) =>
@@ -39,11 +46,6 @@ fn main() {
 }
 
 fn complain(error: &str) -> ! {
-    let usage = "braillify image [size]\n\
-                 \timage: Any image (example: image.png)\n\
-                 \tsize: The desired output size. (example: 50x25)\n\
-                 \t\tIf a size isn't given, it'll be guessed automatically.";
-
-    println!("{}\n\n{}", error, usage);
+    println!("{}\n\n{}", error, USAGE_TEXT);
     process::exit(1);
 }
