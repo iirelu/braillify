@@ -79,9 +79,9 @@ mod tests {
         assert!(display.sample(0, 0) == false);
         assert!(display.sample(4, 19) == true);
 
-        assert!(display.braillify_block(0, 5) == '⠀');
-        assert!(display.braillify_block(0, 6) == '⣤');
-        assert!(display.braillify_block(0, 7) == '⣰');
+        assert!(display.braillify_block(5, 0) == '⠀');
+        assert!(display.braillify_block(6, 0) == '⣤');
+        assert!(display.braillify_block(7, 0) == '⣰');
 
         assert!(display.render() == expected);
     }
