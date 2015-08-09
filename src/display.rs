@@ -26,22 +26,28 @@ impl Display {
         );
         for y in 0..self.char_height {
             for x in 0..self.char_width {
-                let mut dot_map = 0b0000_0000;
-                for i in 0..8 {
-                    let abs_x = (x*2) + (i % 2);
-                    let abs_y = (y*4) + (i / 2);
-                    dot_map |= if self.sample(abs_x, abs_y) {
-                        0b1000_0000 >> i
-                    } else {
-                        0
-                    };
-                }
-                target.push(make_braille(dot_map));
+                target.push(self.braillify_block(x, y));
             }
             target.push('\n');
         }
         target
     }
+
+    fn braillify_block(&self, x: u32, y: u32) -> char {
+        let mut dot_map = 0b0000_0000;
+        for i in 0..8 {
+            let abs_x = (x*2) + (i % 2);
+            let abs_y = (y*4) + (i / 2);
+
+            dot_map |= if self.sample(abs_x, abs_y) {
+                0b1000_0000 >> i
+            } else {
+                0
+            };
+        }
+        make_braille(dot_map)
+    }
+
     fn sample(&self, x: u32, y: u32) -> bool {
         self.image[(x, y)][0] < 128
     }
