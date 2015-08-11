@@ -42,7 +42,7 @@ fn main() {
 
     let display = Display::new(img, width, height);
 
-    println!("{}", display.render());
+    print!("{}", display.render());
 }
 
 fn complain(error: &str) -> ! {
