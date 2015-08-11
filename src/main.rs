@@ -37,7 +37,7 @@ fn main() {
 
     let (width, height) = args.size().unwrap_or({
         let (width, height) = img.dimensions();
-        (width/10, height/10)
+        (width/10, height/20)
     });
 
     let display = Display::new(img, width, height);
