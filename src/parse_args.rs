@@ -1,4 +1,4 @@
-#[derive(PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum Error {
     TooFewArgs,
     CantParseSize,
@@ -74,8 +74,8 @@ mod tests {
         let parser = ArgParser::new(vec!["image.png"]);
         match parser {
             Ok(args) => {
-                assert!(*args.path() == "image.png");
-                assert!(*args.size() == None);
+                assert_eq!(*args.path(), "image.png");
+                assert_eq!(*args.size(), None);
             }
             _ => panic!()
         }
@@ -86,8 +86,8 @@ mod tests {
         let parser = ArgParser::new(vec!["image.png", "50x25"]);
         match parser {
             Ok(args) => {
-                assert!(*args.path() == "image.png");
-                assert!(*args.size() == Some((50, 25)));
+                assert_eq!(*args.path(), "image.png");
+                assert_eq!(*args.size(), Some((50, 25)));
             },
             _ => panic!()
         }
@@ -97,7 +97,7 @@ mod tests {
     fn test_too_few_args() {
         let parser = ArgParser::new::<&str>(vec![]);
         match parser {
-            Err(e) => assert!(e == Error::TooFewArgs),
+            Err(e) => assert_eq!(e, Error::TooFewArgs),
             _ => panic!()
         }
     }
@@ -106,7 +106,7 @@ mod tests {
     fn test_cant_parse_size() {
         let parser = ArgParser::new(vec!["image.png", "junk"]);
         match parser {
-            Err(e) => assert!(e == Error::CantParseSize),
+            Err(e) => assert_eq!(e, Error::CantParseSize),
             _ => panic!()
         }
     }
@@ -115,7 +115,7 @@ mod tests {
     fn test_bad_args() {
         let parser = ArgParser::new(vec!["image.png", "50x25", "junk"]);
         match parser {
-            Err(e) => assert!(e == Error::BadArgs),
+            Err(e) => assert_eq!(e, Error::BadArgs),
             _ => panic!()
         }
     }

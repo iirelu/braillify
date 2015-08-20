@@ -6,7 +6,7 @@ pub trait ToBraille {
     /// # Examples
     ///
     /// ```
-    /// assert!(0b10011101.to_braille() == '⢵');
+    /// assert_eq!(0b10011101.to_braille() == '⢵');
     /// ```
     fn to_braille(&self) -> char;
 }
@@ -47,15 +47,15 @@ mod tests {
 
     #[test]
     fn test_u8_to_braille() {
-        assert!(0b00000000.to_braille() == '⠀');
-        assert!(0b11111111.to_braille() == '⣿');
+        assert_eq!(0b00000000.to_braille(), '⠀');
+        assert_eq!(0b11111111.to_braille(), '⣿');
 
-        assert!(0b00001111.to_braille() == '⣤');
-        assert!(0b11110000.to_braille() == '⠛');
-        assert!(0b10011001.to_braille() == '⢕');
-        assert!(0b10101010.to_braille() == '⡇');
-        assert!(0b01010101.to_braille() == '⢸');
+        assert_eq!(0b00001111.to_braille(), '⣤');
+        assert_eq!(0b11110000.to_braille(), '⠛');
+        assert_eq!(0b10011001.to_braille(), '⢕');
+        assert_eq!(0b10101010.to_braille(), '⡇');
+        assert_eq!(0b01010101.to_braille(), '⢸');
 
-        assert!(0b10011101.to_braille() == '⢵');
+        assert_eq!(0b10011101.to_braille(), '⢵');
     }
 }

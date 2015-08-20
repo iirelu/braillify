@@ -76,13 +76,13 @@ mod tests {
 ⠀⠀⠀⠀⠀⠀⠛⠙⠟⠻⠟⠻⠋⠛⠀⠀⠀⠀⠀⠀
 ";
 
-        assert!(display.sample(0, 0) == false);
-        assert!(display.sample(4, 19) == true);
+        assert_eq!(display.sample(0, 0), false);
+        assert_eq!(display.sample(4, 19), true);
 
-        assert!(display.braillify_block(5, 0) == '⠀');
-        assert!(display.braillify_block(6, 0) == '⣤');
-        assert!(display.braillify_block(7, 0) == '⣰');
+        assert_eq!(display.braillify_block(5, 0), '⠀');
+        assert_eq!(display.braillify_block(6, 0), '⣤');
+        assert_eq!(display.braillify_block(7, 0), '⣰');
 
-        assert!(display.render() == expected);
+        assert_eq!(display.render(), expected);
     }
 }
