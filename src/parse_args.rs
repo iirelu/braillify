@@ -97,7 +97,7 @@ mod tests {
     fn test_too_few_args() {
         let parser = ArgParser::new::<&str>(vec![]);
         match parser {
-            Err(e) => assert_eq!(e, Error::TooFewArgs),
+            Err(Error::TooFewArgs) => {},
             _ => panic!()
         }
     }
@@ -106,7 +106,7 @@ mod tests {
     fn test_cant_parse_size() {
         let parser = ArgParser::new(vec!["image.png", "junk"]);
         match parser {
-            Err(e) => assert_eq!(e, Error::CantParseSize),
+            Err(Error::CantParseSize) => {},
             _ => panic!()
         }
     }
@@ -115,7 +115,7 @@ mod tests {
     fn test_bad_args() {
         let parser = ArgParser::new(vec!["image.png", "50x25", "junk"]);
         match parser {
-            Err(e) => assert_eq!(e, Error::BadArgs),
+            Err(Error::BadArgs) => {},
             _ => panic!()
         }
     }
