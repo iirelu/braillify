@@ -21,14 +21,33 @@ Isn't Rust nice?
 
 ## Usage
 
-`braillify image [size]`
+```
+    braillify [OPTIONS] <file>
 
-* `image`: The path to the image you want to braillify. (For example, image.png)
-* `[size]`: (Optional) Desired output size (For example, 50x25). If one isn't given, it'll guess the best fit.
+FLAGS:
+        --help
+            Prints help information
+
+    -V, --version
+            Prints version information
+
+
+OPTIONS:
+    -h, --height <height>
+            Specifies the height of the rendered braille image. If --width is not also
+            specified, it is guessed from aspect ratio.
+    -w, --width <width>
+            Specifies the width of the rendered braille image. If --height is not also
+            specified, it is guessed from aspect ratio.
+
+ARGS:
+    <file>
+            Image file to convert
+```
 
 ## Examples
 
-`braillify tests/rust-logo.png 40x20`:
+`braillify tests/rust-logo.png -w40`:
 
 ```
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣤⡀⢀⣴⣆⠀⢀⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
