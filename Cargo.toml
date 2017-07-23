@@ -1,8 +1,7 @@
 [package]
-
 name = "braillify"
 version = "0.1.0"
 authors = ["iirelu <totallymyrealemail@hush.ai>"]
 
-[dependencies.image]
-git = "https://github.com/PistonDevelopers/image"
+[dependencies]
+image = "0.14.0"

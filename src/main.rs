@@ -3,7 +3,6 @@ extern crate image;
 use std::env;
 use std::process;
 
-use image::open;
 use display::Display;
 use parse_args::ArgParser;
 use parse_args::Error as ParseError;
