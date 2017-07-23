@@ -5,3 +5,4 @@ authors = ["iirelu <totallymyrealemail@hush.ai>"]
 
 [dependencies]
 image = "0.14.0"
+clap = "2"
