@@ -2,5 +2,5 @@ language: rust
 os:
     - linux
 rust:
-    - 1.2.0
     - nightly
+    - stable
